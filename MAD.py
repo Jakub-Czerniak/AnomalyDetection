@@ -1,6 +1,5 @@
 import numpy
 
-
 class mad: 
     def __init__(self, X, minMAD, threshold):
         self.X=X
@@ -20,7 +19,7 @@ class mad:
         MADn=1.4826*self.MAD
         print('MADn ' + MADn.astype(str))
         print('Last: ' + str(self.X[-1]))
-        Z=numpy.fabs(X[-1]-numpy.median(X))/MADn
+        Z=numpy.fabs(self.X[-1]-numpy.median(self.X))/MADn
         print('Z ' + Z.astype(str))
         if(Z>self.threshold):
             self.isAnomaly=True
@@ -28,16 +27,14 @@ class mad:
 def runMAD_onData(data,windowSize):
     for i in range(0, len(data)-windowSize+1, 1):
         X = [data[i:i+windowSize] ]
-        m=mad(X, 0.01,3)
+        print(X[0])
+        m=mad(X[0], 0.01,3)
         m.detectAnomalies()
         if(m.isAnomaly==True):
-            print('anomaly at', len(X))
+            print('anomaly at', i+windowSize)
 
 #X=[0.5,0.5,0.5,0.5,0.5,0.5,0.55,0.55,0.55,0.55,0.6,0.6,0.6,0.6,0.65,0.65,0.65,0.65,0.65,0.8,0.8,0.8,0.9]
 #X=[0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,10,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,5]
-X=[1,2,2.5,4,5,5,100]
+X=[1.0,2.0,2.5,4.0,5.0,5.0,100]
 
 runMAD_onData(X, 5)
-
-
-        
