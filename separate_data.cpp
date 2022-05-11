@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <string>
 
 using namespace std;
 
@@ -30,7 +31,7 @@ void separate_data(ifstream& data_file)
             new_file << text << endl;
 
             data_file >> id;
-        } while (old_id == id);
+        } while (old_id == id && !data_file.eof());
 
         new_file.close();
     }
