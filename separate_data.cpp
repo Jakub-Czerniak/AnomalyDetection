@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <string>
 
 using namespace std;
 
@@ -20,7 +21,7 @@ void separate_data(ifstream& data_file)
     {
         file_name = "./data/" + to_string(id) + ".txt"; // tutaj tworzona jest nazwa pliku z danymi
         new_file.open(file_name);
-        new_file << "ID czujnika: " << id << endl;
+        new_file << "date; data" << endl;
 
         do
         {
@@ -30,7 +31,7 @@ void separate_data(ifstream& data_file)
             new_file << text << endl;
 
             data_file >> id;
-        } while (old_id == id);
+        } while (old_id == id && !data_file.eof());
 
         new_file.close();
     }
