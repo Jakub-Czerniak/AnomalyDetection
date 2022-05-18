@@ -32,13 +32,13 @@ def runMAD_onData(data,windowSize, learningWindowSize):
     threshold=0.0
     for i in range (0, learningWindowSize-windowSize+1):
         X = [data[i:i+windowSize]]
-        m=mad(X, 0.01)
+        m=mad(X[0], 0.01)
         m.calculateThreshold()
         threshold = max ( m.threshold, threshold )
         print(threshold)
     for i in range(learningWindowSize-windowSize+1, len(data)-windowSize+1, 1):
         X = [data[i:i+windowSize]]
-        m=mad(X, 0.01)        
+        m=mad(X[0], 0.01)        
         m.detectAnomalies(threshold)
         if(m.isAnomaly==True):
             print('anomaly at', i+windowSize)
@@ -47,4 +47,4 @@ X=[0.5,0.5,0.5,0.5,0.5,0.5,0.55,0.55,0.55,0.55,0.6,0.6,0.6,0.6,0.65,0.65,0.65,0.
 #X=[0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,10,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,5]
 #X=[1.0,2.0,2.5,4.0,5.0,5.0,100]
 
-runMAD_onData(X, 11, 10)
+runMAD_onData(X, 5, 10)
