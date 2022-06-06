@@ -72,7 +72,6 @@ class mad:
 
     def detectAnomalies(self, threshold):
         self.__calcualteMAD()
-        print(self.MAD)
         if (self.MAD < self.minMAD):
             self.MAD = self.minMAD
         MADn = 1.4826 * self.MAD
@@ -98,10 +97,8 @@ def runMAD_onData(data, windowSize, learningWindowSize):
         m = mad(X[0], 0.000001)
         m.calculateThreshold()
         threshold = max(m.threshold, threshold)
-        print(threshold)
     threshold = 1.1 * threshold
     for i in range(learningWindowSize - windowSize + 1, len(data) - windowSize, 1):
-       # print("dziala3")
         X = [data[i:i + windowSize]]
         m = mad(X[0], 0.001)
         m.detectAnomalies(threshold)
