@@ -30,6 +30,10 @@ anomaliesX = []
 anomalies_ranks = []
 anomaliesY = []
 
+anomaliesBoundUp = []
+anomaliesBoundDown = []
+anomaliesBoundY = []
+
 
 def filename():
     global file_name
@@ -68,12 +72,13 @@ class mad:
 
     def detectAnomalies(self, threshold):
         self.__calcualteMAD()
+        print(self.MAD)
         if (self.MAD < self.minMAD):
             self.MAD = self.minMAD
         MADn = 1.4826 * self.MAD
         Z = numpy.abs(self.X[-1] - numpy.median(self.X)) / MADn
         self.upperBound = numpy.abs(numpy.median(self.X) + MADn * threshold)
-        self.lowerBound = numpy.abs(numpy.median(self.X) - MADn * threshold)
+        self.lowerBound = -self.upperBound
         if (Z > threshold):
             self.isAnomaly = True
             self.degree = Z // threshold
@@ -90,7 +95,7 @@ def runMAD_onData(data, windowSize, learningWindowSize):
     threshold = 0.0
     for i in range(0, learningWindowSize - windowSize + 1):
         X = [data[i:i + windowSize]]
-        m = mad(X[0], 0.01)
+        m = mad(X[0], 0.000001)
         m.calculateThreshold()
         threshold = max(m.threshold, threshold)
         print(threshold)
@@ -98,8 +103,12 @@ def runMAD_onData(data, windowSize, learningWindowSize):
     for i in range(learningWindowSize - windowSize + 1, len(data) - windowSize, 1):
        # print("dziala3")
         X = [data[i:i + windowSize]]
-        m = mad(X[0], 0.01)
+        m = mad(X[0], 0.001)
         m.detectAnomalies(threshold)
+        anomaliesBoundUp.append(m.upperBound)
+        anomaliesBoundDown.append(m.lowerBound)
+        anomaliesBoundY.append(X_time[i+windowSize])
+        print('lower bound', m.lowerBound,'value', X[0][-1], 'upper bound', m.upperBound,'date', X_time[i+windowSize])
         if (m.isAnomaly == True):
             anomaliesX.append(X_time[i + windowSize])
             anomaliesY.append(data[i + windowSize])
@@ -125,6 +134,8 @@ def showMad():
             print("Directory ", mkdir_name, " Created ")
         else:
             print("Directory ", mkdir_name, " already exists")
+
+
 
         X1, Y1 = calculate_mean_delta(X, X_time, 1)
         inp = inputtxt.get(1.0, "end-1c")
@@ -157,6 +168,8 @@ def showMad():
         delta_usage = plt.figure(figsize=(10, 5))
         plt.plot_date(anomaliesX, anomaliesY, 'ro', markersize=5)  # wyswietlanie annomalii
         plt.plot_date(Y1, X1, markersize=0.5, linestyle='solid')
+        plt.plot_date(anomaliesBoundY, anomaliesBoundUp, markersize=0.5, linestyle='solid')
+        #plt.plot_date(anomaliesBoundY, anomaliesBoundDown, markersize=0.5, linestyle='solid')
         plt.xlabel("date")
         plt.ylabel("Δ water usage")
         plt.tight_layout()

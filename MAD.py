@@ -52,7 +52,7 @@ def runMAD_onData(data,windowSize, learningWindowSize):
             #anomaliesY.append(data[i + windowSize])
             print('upper bound breach' if X[0][-1]>m.upperBound else 'lower bound breach','anomaly of rank ', m.degree if m.degree<5 else 5, ' at ', i,'upper bound:', m.upperBound,'lower bound:', m.lowerBound ,'value:', X[0][-1])
 
-X=[0.5,0.5,0.5,0.5,0.5,0.5,0.55,0.55,0.55,0.55,0.6,0.6,0.6,0.6,0.1,0.65,0.65,0.65,0.65,0.65,0.8,0.8,0.8,0.9]
+X=[0.5,0.5,0.5,0.5,0.5,0.5,0.55,0.55,0.55,0.55,0.6,0.6,0.6,0.6,0.1,0.65,0.65,0.65,0.65,0.65,0.8,0.8,0.8,5]
 #X=[0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,10,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,5]
 #X=[1.0,2.0,2.5,4.0,5.0,5.0,100]
 
